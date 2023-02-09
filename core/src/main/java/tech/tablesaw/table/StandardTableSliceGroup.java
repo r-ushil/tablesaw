@@ -91,9 +91,10 @@ public class StandardTableSliceGroup extends TableSliceGroup {
         }
         // Add to the matching selection.
         ByteArray byteArray = new ByteArray(byteArrayList.toByteArray());
-        Selection selection = selectionMap.getOrDefault(byteArray, new BitmapBackedSelection());
+
+        Selection selection = selectionMap.computeIfAbsent(byteArray, x -> new BitmapBackedSelection())
         selection.add(i);
-        selectionMap.put(byteArray, selection);
+
         sliceNameMap.put(byteArray, stringKey.toString());
       }
     } else { // handle the case where split is on non-text-columns
@@ -113,9 +114,9 @@ public class StandardTableSliceGroup extends TableSliceGroup {
         }
         // Add to the matching selection.
         ByteArray byteArray = new ByteArray(byteBuffer.array());
-        Selection selection = selectionMap.getOrDefault(byteArray, new BitmapBackedSelection());
+        Selection selection = selectionMap.computeIfAbsent(byteArray, x -> new BitmapBackedSelection())
         selection.add(i);
-        selectionMap.put(byteArray, selection);
+
         sliceNameMap.put(byteArray, stringKey.toString());
       }
     }
